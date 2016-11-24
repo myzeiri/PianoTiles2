@@ -4,14 +4,11 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
-
 import java.util.Random;
 
 /*
@@ -21,31 +18,15 @@ import java.util.Random;
         --Display the game clock somewhere on screen
         --Store high scores
         --Change the back tiles to green as the user gets close to 50 tiles
+        --Find a way to use for loops to create the buttons
+               --onClick might have to go into the for loop itself
 */
 
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends TileUtility implements View.OnClickListener {
 
-    private Button btn1;
-    private Button btn2;
-    private Button btn3;
-    private Button btn4;
-    private Button btn5;
-    private Button btn6;
-    private Button btn7;
-    private Button btn8;
-    private Button btn9;
-    private Button btn10;
-    private Button btn11;
-    private Button btn12;
-    private Button btn13;
-    private Button btn14;
-    private Button btn15;
-    private Button btn16;
-    private Button btn17;
-    private Button btn18;
-    private Button btn19;
-    private Button btn20;
+    public Button btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9, btn10, btn11,
+            btn12, btn13, btn14, btn15, btn16, btn17, btn18, btn19, btn20;
 
     int programCounter = 0;
     long startTime = System.currentTimeMillis();
@@ -55,9 +36,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Piano Tiles");
+
+        //This for-loop idea doesn't seem to work. The buttons are falling out of scope.
+
+        /*Button[] buttons = new Button[]{btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9, btn10,
+                btn11, btn12, btn13, btn14, btn15, btn16, btn17, btn18, btn19, btn20};
+
+        int buttonIDs[] = new int[]{R.id.button0, R.id.button1, R.id.button2, R.id.button3, R.id.button4,
+                R.id.button5, R.id.button6, R.id.button7, R.id.button8, R.id.button9, R.id.button10,
+                R.id.button11, R.id.button12, R.id.button13, R.id.button14, R.id.button15, R.id.button16,
+                R.id.button17, R.id.button18, R.id.button19};
+
+        for (int i = 0; i < buttons.length; i++){
+            buttons[i] = (Button) findViewById(buttonIDs[i]);
+            buttons[i].setOnClickListener(this);
+            buttons[i].setBackgroundResource(R.drawable.black_tile);
+            buttons[i].setTag("BLACK");
+        }*/
 
 
         /*
@@ -79,16 +76,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btn14 = (Button) findViewById(R.id.button13);
         btn15 = (Button) findViewById(R.id.button14);
         btn16 = (Button) findViewById(R.id.button15);
-
         btn17 = (Button) findViewById(R.id.button16);
         btn18 = (Button) findViewById(R.id.button17);
         btn19 = (Button) findViewById(R.id.button18);
         btn20 = (Button) findViewById(R.id.button19);
 
-
-
         /*
-         * setting up buttons to be clickable
+         * Setting up the bottom four buttons to be clickable
          */
         btn17.setOnClickListener(this);
         btn18.setOnClickListener(this);
@@ -97,7 +91,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
         /*
-         * Set colors
+         * Setting up color tags. This is necessary since there's no good way to compare the
+         * background of a tile to anything else.
          */
         btn1.setBackgroundResource(R.drawable.black_tile);
         btn1.setTag("BLACK");
@@ -133,32 +128,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    public void changeColors(Button[]b, int index){
-        for(int i = 0; i < b.length; i++){
-            if (i==index){
-                b[i].setBackgroundResource(R.drawable.black_tile);
-                b[i].setTag("BLACK");
-            }
-            else {
-                b[i].setBackgroundResource(R.drawable.white_tile);
-                b[i].setTag(" ");
-            }
-        }
-    }
-
-    /**
-     * Searches the array for the button that has a "BLACK" tag
-     */
-    public int findBlack(Button[]a){
-        int position = -1;
-        for (int i = 0; i < a.length; i++) {
-            String color = (String) a[i].getTag();
-            if (color.equals("BLACK")){
-                position = i;
-            }
-        }
-        return position;
-    }
 
     public void playSoundEffect(int i){
         if (i == 0){
@@ -181,10 +150,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void onClick(View v) {
         final AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
-
-        MediaPlayer sound = MediaPlayer.create(this, R.raw.piano063);
-        sound.start();
-
 
         Button [] firstRow = new Button[]{btn1, btn2, btn3, btn4};
         Button [] secondRow = new Button[]{btn5, btn6, btn7, btn8};
